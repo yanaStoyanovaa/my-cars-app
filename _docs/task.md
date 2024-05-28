@@ -15,6 +15,8 @@ Style however you like, but make sure it's responsive and looks good on mobile a
 
 ## Data and file structure
  - The data comes form the graphql API (https://task_fe_demo.pfgbulgaria.com/graphql) already configured in .env.local and it's randomly generated
+   - see _docs/graphql.md and TestCors.tsx for usage and how to generate the API/SDK
+   - there is a Postman collection in _docs/ for all available requests 
  - Chose what ever file structure you like and make sense to you
 
 ## Requirements
@@ -22,7 +24,7 @@ Style however you like, but make sure it's responsive and looks good on mobile a
  - Style using tailwindcss (already added)
  - for form state use formik (already added)
  - for application state use React context API or zustand (already added)
- - API calls are done using graphql (already added) - see _docs/graphql.md and TestCors.tsx
+ - API calls are done using graphql and the generated SDK (see _docs/graphql.md)
  - don't install any additional packages or libraries except "radix-ui/*" (any package from this namespace, used for styling) if you need some base UI components
 
 ## Nice to have
