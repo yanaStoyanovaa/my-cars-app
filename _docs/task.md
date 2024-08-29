@@ -8,6 +8,11 @@ The home page should have a table showing all cars modifications and there respe
  - the name columns should be filterable and the horsePower, weight sortable (do this in the table context)
 The crud page should have a form for editing/creating/deleting a brand, model, modification (see _docs/images for UI guidance)
  - use selects that allow search, the search value is not found then allow user to create a new item (_docs/images/4_searching_value_or_creating_new_one.png)
+   - for getting the date related to brand, model, modification and prefilling the selects use the following graphql queries:
+     - brands: carBrands
+     - models: carModels(brandId) - where brandId is the selected brand
+     - modifications: carModifications(modelId) - where modelId is the selected model
+   - avoid excessive calls to the API (especially for data already fetched)
  - preview the images in _docs/images for editing/creating/deleting a brand, model, modification
 make sure you have loading states and error handling (the API is randomly slow and randomly fails on purpose - to disable read _docs/other.md)
 Style however you like, but make sure it's responsive and looks good on mobile and desktop 
@@ -31,7 +36,6 @@ Style however you like, but make sure it's responsive and looks good on mobile a
  - avoid excessive calls to the API (especially for data already fetched)
  - use generic components (one Editable_Searchable_Select component for all selects)
  - use generics for types when leveraging generic components
-
 
 ## Tips
  - read the docs in _docs/ folder
