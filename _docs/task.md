@@ -5,7 +5,6 @@ Implement a 2-page website (/, /edit), consisting of a home page with a DataTabl
 where you can edit/create/delete cars (brands, models, modifications).
 The home page should have a table showing all cars modifications and there respective data 
  - eg. brand.name, model.name, modification.name, horsePower, weight (from graphql: CarModification type)
- - the name columns should be filterable and the horsePower, weight sortable (do this in the table context)
 The crud page should have a form for editing/creating/deleting a brand, model, modification (see _docs/images for UI guidance)
  - use selects that allow search, the search value is not found then allow user to create a new item (_docs/images/4_searching_value_or_creating_new_one.png)
    - for getting the date related to brand, model, modification and prefilling the selects use the following graphql queries:
