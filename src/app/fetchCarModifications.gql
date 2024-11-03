@@ -1,0 +1,100 @@
+query FetchCarModifications {
+  allCarModifications {
+    id
+    name
+    horsePower
+    weight
+    coupe
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}
+
+# Fetch car models by brand ID
+query FetchCarModels($brandId: ID!) {
+  carModels(brandId: $brandId) {
+    id
+    name
+  }
+}
+
+# Fetch car modifications by model ID
+query FetchCarModificationsByModel($modelId: ID!) {
+  carModifications(modelId: $modelId) {
+    id
+    name
+    horsePower
+    weight
+    coupe
+  }
+}
+
+# Mutation to create a new car brand
+mutation CreateCarBrand($name: String!) {
+  createCarBrand(name: $name) {
+    id
+    name
+  }
+}
+
+# Mutation to create a new car model
+mutation CreateCarModel($brandId: ID!, $name: String!) {
+  createCarModel(brandId: $brandId, name: $name) {
+    id
+    name
+    brand {
+      id
+      name
+    }
+  }
+}
+
+# Mutation to create a new car modification
+mutation CreateCarModification(
+  $modelId: ID!
+  $name: String!
+  $coupe: CarCoupe
+  $horsePower: Int
+  $weight: Float
+) {
+  createCarModification(modelId: $modelId, name: $name) {
+    id
+    name
+    coupe
+    horsePower
+    weight
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}
+
+
+query GetCarModificationsByModel($modelId: ID!) {
+  carModifications(modelId: $modelId) {
+    id
+    name
+    coupe
+    horsePower
+    weight
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}
