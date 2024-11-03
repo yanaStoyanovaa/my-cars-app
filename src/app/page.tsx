@@ -11,6 +11,7 @@ export default async function Home() {
         {brand.carBrands?.map((brand) => (
           <div key={brand.id}>{brand.name}</div>
         ))}
+        test
       </div>
     </div>
   )
