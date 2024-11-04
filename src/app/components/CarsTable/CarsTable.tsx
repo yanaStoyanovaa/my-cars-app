@@ -5,7 +5,7 @@ import { Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
 import { Button, Table } from '@radix-ui/themes'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from "next/navigation";
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CarsDataTable: React.FC = () => {
   const router = useRouter();
@@ -17,6 +17,8 @@ const CarsDataTable: React.FC = () => {
       return response.allCarModifications
     },
   })
+
+
 
   if (isLoading) return <p>Loading data...</p>
   if (error) return <p>Error loading data</p>
@@ -48,7 +50,7 @@ const CarsDataTable: React.FC = () => {
               <Table.Cell>{car.horsePower}</Table.Cell>
               <Table.Cell>{car.weight}</Table.Cell>
               <Table.Cell>
-              <Button onClick={() => router.push(`/edit/${car.id}`)}>
+              <Button onClick={() => router.push(`/edit/${car.id}/${car.model.id}`)}>
                   <Pencil1Icon />
                 </Button>
               </Table.Cell>

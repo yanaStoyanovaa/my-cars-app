@@ -98,3 +98,22 @@ query GetCarModificationsByModel($modelId: ID!) {
     }
   }
 }
+
+
+query GetCarModificationsById($modificationId: ID!) {
+  carModifications(id: $modificationId) {
+    id
+    name
+    coupe
+    horsePower
+    weight
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}

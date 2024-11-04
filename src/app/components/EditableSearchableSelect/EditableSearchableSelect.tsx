@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { GraphQLBackend } from "@/lib/api/graphql"; // Adjust the path as per your setup
+import styles from "./EditableSearchableSelect.module.scss";
 
 interface EditableSearchableSelectProps {
   name: string;
   placeholder: string;
   queryKey: "brands" | "models" | "modifications";
   selectedId?: string; // brandId or modelId, depending on the context
+  selectedModificationID?: string;
   onChange: (value: string) => void;
 }
 
@@ -16,6 +18,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   queryKey,
   selectedId,
   onChange,
+  selectedModificationID,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<{ id: string; name: string }[]>([]);
@@ -41,7 +44,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
           }
           return [];
         case "modifications":
-          if (selectedId) {
+          if (selectedId && selectedModificationID) {
             const modificationsResponse = await GraphQLBackend.FetchCarModificationsByModel({
               modelId: selectedId,
             });
@@ -55,6 +58,26 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
     enabled: queryKey === "brands" || Boolean(selectedId),
   });
 
+  // Update the selected name when selectedId or data changes
+  useEffect(() => {
+    if (data) {
+      let initialOption;
+  
+      // Check which ID we should use for setting the initial selected name
+      if (queryKey === "modifications" && selectedModificationID) {
+        initialOption = data.find((option) => option.id === selectedModificationID);
+      } else if (selectedId) {
+        initialOption = data.find((option) => option.id === selectedId);
+      }
+  
+      // Set the selected name if we found a matching option
+      if (initialOption) {
+        setSelectedName(initialOption.name);
+        setInputValue(""); // Clear the input
+      }
+    }
+  }, [data, selectedId, selectedModificationID, queryKey]);
+  
   // Update filtered options when data or inputValue changes
   useEffect(() => {
     if (data) {
@@ -85,27 +108,24 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
       }
     },
     onSuccess: (createdData) => {
-      // Extract the correct response data based on the mutation type
       let newId: string | undefined;
       let newName: string | undefined;
   
-      if ('createCarBrand' in createdData) {
+      if ("createCarBrand" in createdData) {
         newId = createdData.createCarBrand.id;
         newName = createdData.createCarBrand.name;
-      } else if ('createCarModel' in createdData) {
+      } else if ("createCarModel" in createdData) {
         newId = createdData.createCarModel.id;
         newName = createdData.createCarModel.name;
-      } else if ('createCarModification' in createdData) {
+      } else if ("createCarModification" in createdData) {
         newId = createdData.createCarModification.id;
         newName = createdData.createCarModification.name;
       }
   
       if (newId && newName) {
-        // Update the input with the new value
         setSelectedName(newName);
         setInputValue(""); // Clear input field
         setShowCreateButton(false);
-  
         onChange(newId); // Send the new ID back to the parent component
         refetch(); // Refetch options to include the new entry
       }
@@ -113,42 +133,37 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   });
   
 
-  // Handle input change and filter options
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setSelectedName(""); // Clear selected name when typing a new input
     setShowDropdown(true); // Show dropdown when typing
   };
 
-  // Handle select change
   const handleOptionClick = (option: { id: string; name: string }) => {
     onChange(option.id);
-    setSelectedName(option.name); // Update the input to show the selected option's name
-    setInputValue(""); // Clear the temporary input value
-    setShowDropdown(false); // Hide dropdown after selection
+    setSelectedName(option.name);
+    setInputValue(""); 
+    setShowDropdown(false);
   };
 
-  // Handle create button click
   const handleCreate = () => {
     if (inputValue) {
       createNewEntry(inputValue);
-      setShowDropdown(false); // Hide dropdown after creation
+      setShowDropdown(false); 
     }
   };
 
-  // Toggle dropdown visibility on input focus
   const handleInputFocus = () => {
     setShowDropdown(true);
   };
 
-  // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setShowDropdown(false); // Close dropdown if clicked outside
+        setShowDropdown(false); 
       }
     };
 
@@ -159,7 +174,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxWidth: "300px", position: "relative" }} ref={dropdownRef}>
+    <div className={styles.container} ref={dropdownRef}>
       
       <input
         type="text"
@@ -167,62 +182,34 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
         value={selectedName || inputValue} // Show the selected name or the input value
         onChange={handleInputChange}
         onFocus={handleInputFocus} // Show dropdown on focus
-        style={{
-          padding: "8px",
-          borderRadius: "4px",
-          border: "1px solid #ccc",
-          marginBottom: "4px",
-        }}
+        className={styles.input}
       />
 
-      {/* Only show dropdown if showDropdown is true and there are filtered options */}
-      {showDropdown && filteredOptions.length > 0 && (
-        <div
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            maxHeight: "150px",
-            overflowY: "auto",
-            position: "absolute",
-            top: "100%",
-            backgroundColor: "#fff",
-            zIndex: 1,
-            width: "100%",
-          }}
-        >
-          {filteredOptions.map((option) => (
-            <div
-              key={option.id}
-              onClick={() => handleOptionClick(option)}
-              style={{
-                padding: "8px",
-                cursor: "pointer",
-                borderBottom: "1px solid #f0f0f0",
-              }}
+      {showDropdown && (
+        <div className={styles.dropdown}>
+          {isLoading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : (
+            filteredOptions.map((option) => (
+              <div
+                key={option.id}
+                onClick={() => handleOptionClick(option)}
+                className={styles.option}
+              >
+                {option.name}
+              </div>
+            ))
+          )}
+          {showCreateButton && (
+            <button
+              type="button"
+              onClick={handleCreate}
+              className={styles.createButton}
             >
-              {option.name}
-            </div>
-          ))}
+              + Create "{inputValue}"
+            </button>
+          )}
         </div>
-      )}
-
-      {/* Show create button only if showDropdown is true, there are no filtered options, and input is non-empty */}
-      {showDropdown && showCreateButton && (
-        <button
-          type="button"
-          onClick={handleCreate}
-          style={{
-            backgroundColor: "#28a745",
-            color: "#fff",
-            padding: "8px",
-            borderRadius: "4px",
-            border: "none",
-            marginTop: "4px",
-            cursor: "pointer",
-          }}
-        >
-          + Create "{inputValue}"
-        </button>
       )}
     </div>
   );

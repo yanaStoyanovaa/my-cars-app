@@ -1,65 +1,52 @@
 'use client'
-import React, { useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
+import React from 'react'
+import { useRouter } from 'next/navigation'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import EditableSearchableSelect from '@/app/components/SearchSelectCreate/SearchSelectCreate'
+import EditableSearchableSelect from '@/app/components/EditableSearchableSelect/EditableSearchableSelect'
 import styles from './EditCreateCarDetails.module.scss'
-import { useQuery } from '@tanstack/react-query'
-import { GraphQLBackend } from '@/lib/api/graphql'
 import { CarModification } from '@/lib/_generated/graphql_sdk'
 
 export interface EditCreateCarDetailsProps {
   postValues: (values: any) => void
-  id?: any
+  car?: CarModification
 }
 
 const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
-  const { id } = props
+  const { postValues, car } = props
   const router = useRouter()
-  const title = props.id
-    ? `Edit Car Modification ${props.id}`
+
+  const title = car
+    ? `Edit Car Modification ${car.model.id}`
     : 'Create new Car Modification'
 
-  const { data, isLoading, error } = useQuery<CarModification[]>({
-    queryKey: ['carModifications', id],
-    retry: false,
-    queryFn: async () => {
-      const response = await GraphQLBackend.GetCarModificationsByModel({
-        modelId: id as string,
-      })
-      return response.carModifications
-    },
-    enabled: !!id, // Ensure the query only runs if modelId is provided
-  })
-
-  console.log(data)
-
   const initialValues = {
-    brand:  '',
-    model: '',
-    modification: '',
-    horsePower: 0,
-    weight: 0,
+    brand: car ? car.model.brand.id : '',
+    model: car ? car.model.id : '',
+    modification: car ? car.id : '',
+    horsePower: car ? car.horsePower : 0,
+    weight: car ? car.weight : 0,
   }
 
   const handleSubmit = (values: typeof initialValues) => {
-    props.postValues(values)
+    postValues(values)
   }
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{title}</h1>
 
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
         {({ setFieldValue, values }) => (
           <Form>
             <div className={styles.form}>
+              {/* Brand Field */}
               <div className={styles.fieldContainer}>
                 <label>Brand</label>
                 <EditableSearchableSelect
                   name="brand"
                   placeholder="Select or create brand"
                   queryKey="brands"
+                  selectedId={values.brand} // Initial value from `car` if provided
                   onChange={(value) => setFieldValue('brand', value)}
                 />
                 <ErrorMessage
@@ -69,13 +56,14 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 />
               </div>
 
+              {/* Model Field */}
               <div className={styles.fieldContainer}>
                 <label>Model</label>
                 <EditableSearchableSelect
                   name="model"
                   placeholder="Select or create model"
                   queryKey="models"
-                  selectedId={values.brand}
+                  selectedId={values.brand} // Model depends on selected brand
                   onChange={(value) => setFieldValue('model', value)}
                 />
                 <ErrorMessage
@@ -85,13 +73,15 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 />
               </div>
 
+              {/* Modification Field */}
               <div className={styles.fieldContainer}>
                 <label>Modification</label>
                 <EditableSearchableSelect
                   name="modification"
                   placeholder="Select or create modification"
                   queryKey="modifications"
-                  selectedId={values.model}
+                  selectedId={car ? car.model.id : ""} // Modification depends on selected model
+                  selectedModificationID={car ? car.id : ""}
                   onChange={(value) => setFieldValue('modification', value)}
                 />
                 <ErrorMessage
@@ -101,6 +91,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 />
               </div>
 
+              {/* Horse Power Field */}
               <div className={styles.fieldContainer}>
                 <label>Horse Power</label>
                 <Field
@@ -119,6 +110,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 />
               </div>
 
+              {/* Weight Field */}
               <div className={styles.fieldContainer}>
                 <label>Weight</label>
                 <Field
@@ -137,11 +129,14 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 />
               </div>
             </div>
+
+            {/* Buttons */}
             <div className={styles.buttonContainer}>
               <button type="submit" className={styles.primaryButton}>
                 Save Car
               </button>
               <button
+                type="button"
                 onClick={() => router.back()}
                 className={styles.secondaryButton}
               >
