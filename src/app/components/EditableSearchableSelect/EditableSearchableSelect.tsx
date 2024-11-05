@@ -10,6 +10,7 @@ interface EditableSearchableSelectProps {
   selectedId?: string; // brandId or modelId, depending on the context
   selectedModificationID?: string;
   onChange: (value: string) => void;
+  disabled? : boolean
 }
 
 const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
@@ -19,6 +20,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   selectedId,
   onChange,
   selectedModificationID,
+  disabled
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<{ id: string; name: string }[]>([]);
@@ -41,10 +43,11 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
               brandId: selectedId,
             });
             return modelsResponse.carModels;
-          }
+          } 
           return [];
         case "modifications":
-          if (selectedId && selectedModificationID) {
+          console.log("selected id", selectedId)
+          if (selectedId) {
             const modificationsResponse = await GraphQLBackend.FetchCarModificationsByModel({
               modelId: selectedId,
             });
@@ -55,14 +58,14 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
           return [];
       }
     },
-    enabled: queryKey === "brands" || Boolean(selectedId),
+    enabled: queryKey === "brands" || Boolean(selectedId) || queryKey === "models",
   });
 
   // Update the selected name when selectedId or data changes
   useEffect(() => {
     if (data) {
       let initialOption;
-  
+
       // Check which ID we should use for setting the initial selected name
       if (queryKey === "modifications" && selectedModificationID) {
         initialOption = data.find((option) => option.id === selectedModificationID);
@@ -183,6 +186,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
         onChange={handleInputChange}
         onFocus={handleInputFocus} // Show dropdown on focus
         className={styles.input}
+        disabled={disabled}
       />
 
       {showDropdown && (

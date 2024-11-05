@@ -47,7 +47,11 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   placeholder="Select or create brand"
                   queryKey="brands"
                   selectedId={values.brand} // Initial value from `car` if provided
-                  onChange={(value) => setFieldValue('brand', value)}
+                  onChange={(value) => {
+                    setFieldValue('brand', value);
+                    setFieldValue('model', ''); // Clear model when brand changes
+                    setFieldValue('modification', ''); // Clear modification when brand changes
+                  }}
                 />
                 <ErrorMessage
                   name="brand"
@@ -64,7 +68,11 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   placeholder="Select or create model"
                   queryKey="models"
                   selectedId={values.brand} // Model depends on selected brand
-                  onChange={(value) => setFieldValue('model', value)}
+                  onChange={(value) => {
+                    setFieldValue('model', value);
+                    setFieldValue('modification', ''); // Clear modification when model changes
+                  }}
+                  disabled={!values.brand}
                 />
                 <ErrorMessage
                   name="model"
@@ -80,9 +88,10 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   name="modification"
                   placeholder="Select or create modification"
                   queryKey="modifications"
-                  selectedId={car ? car.model.id : ""} // Modification depends on selected model
+                  selectedId={car ? car.model.id : values.model} // Modification depends on selected model
                   selectedModificationID={car ? car.id : ""}
                   onChange={(value) => setFieldValue('modification', value)}
+                  disabled={!values.model}
                 />
                 <ErrorMessage
                   name="modification"

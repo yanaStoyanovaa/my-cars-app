@@ -9,7 +9,7 @@ import EditCreateCarDetails, { EditCreateCarDetailsProps } from '@/app/component
 
 const CreateNewCar: React.FC = () => {
   const editCreateCarDetailProps: EditCreateCarDetailsProps = {
-    postValues: (values) => console.log()
+    postValues: (values) => console.log(values)
   }
     
   return (
