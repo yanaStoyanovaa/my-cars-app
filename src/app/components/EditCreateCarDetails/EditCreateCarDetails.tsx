@@ -17,7 +17,6 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
   const { postValues, car } = props
   const router = useRouter()
 
-
   const title = car
     ? `Edit Car Modification ${car.model.id}`
     : 'Create new Car Modification'
@@ -33,7 +32,6 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
   const handleSubmit = (values: typeof initialValues) => {
     postValues(values)
   }
-
 
   return (
     <div className={styles.container}>
@@ -114,6 +112,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 <Field
                   name="horsePower"
                   type="number"
+                  min="1"
                   className={styles.numberInput}
                   style={{
                     padding: '8px',
@@ -134,6 +133,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 <Field
                   name="weight"
                   type="number"
+                  min="1"
                   className={styles.numberInput}
                   style={{
                     padding: '8px',
@@ -154,7 +154,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
               <button
                 type="submit"
                 className={styles.primaryButton}
-                disabled={!isValid || !dirty} 
+                disabled={!isValid || !dirty}
               >
                 Save Car
               </button>
