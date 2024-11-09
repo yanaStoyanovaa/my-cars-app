@@ -7,6 +7,7 @@ import EditCreateCarDetails, {
 } from '@/app/components/EditCreateCarDetails/EditCreateCarDetails'
 import { CarModification } from '@/lib/_generated/graphql_sdk'
 import { GraphQLBackend } from '@/lib/api/graphql'
+import Loader from '@/app/components/Loader/Loader'
 
 const EditCarModification: React.FC = () => {
   const { id, modelId } = useParams()
@@ -37,6 +38,8 @@ const EditCarModification: React.FC = () => {
     postValues: (values) => console.log(values),
     car: car as CarModification,
   }
+
+  if(isLoading) return <Loader message='Loading car details...'/>
 
   return (
     <div>

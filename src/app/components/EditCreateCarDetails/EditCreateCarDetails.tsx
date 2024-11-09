@@ -16,7 +16,6 @@ export interface EditCreateCarDetailsProps {
 const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
   const { postValues, car } = props
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(true); 
 
 
   const title = car
@@ -35,24 +34,6 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
     postValues(values)
   }
 
-  useEffect(() => {
-    if (car) {
-      const allFieldsFilled =
-        initialValues.brand &&
-        initialValues.model &&
-        initialValues.modification &&
-        initialValues.horsePower &&
-        initialValues.weight;
-      
-      
-      setIsLoading(!allFieldsFilled);
-    } else {
-      setIsLoading(false); 
-    }
-  }, [car, initialValues]);
-
-
-  if(isLoading) return <Loader message='Loading car details...'/>
 
   return (
     <div className={styles.container}>
