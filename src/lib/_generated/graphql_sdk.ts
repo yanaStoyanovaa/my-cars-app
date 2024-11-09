@@ -292,9 +292,6 @@ export type CreateCarModelMutation = {
 export type CreateCarModificationMutationVariables = Exact<{
   modelId: Scalars['ID']['input']
   name: Scalars['String']['input']
-  coupe?: InputMaybe<CarCoupe>
-  horsePower?: InputMaybe<Scalars['Int']['input']>
-  weight?: InputMaybe<Scalars['Float']['input']>
 }>
 
 export type CreateCarModificationMutation = {
@@ -335,6 +332,50 @@ export type GetCarModificationsByModelQuery = {
       brand: { __typename?: 'CarBrand'; id: string; name: string }
     }
   }>
+}
+
+export type GetAllCarModificationsQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type GetAllCarModificationsQuery = {
+  __typename?: 'Query'
+  allCarModifications: Array<{
+    __typename?: 'CarModification'
+    id: string
+    name: string
+    coupe: CarCoupe
+    horsePower: number
+    weight: number
+    model: {
+      __typename?: 'CarModel'
+      id: string
+      name: string
+      brand: { __typename?: 'CarBrand'; id: string; name: string }
+    }
+  }>
+}
+
+export type EditCarModificationMutationVariables = Exact<{
+  data: CarModificationData
+}>
+
+export type EditCarModificationMutation = {
+  __typename?: 'Mutation'
+  editCarModification: {
+    __typename?: 'CarModification'
+    id: string
+    name: string
+    coupe: CarCoupe
+    horsePower: number
+    weight: number
+    model: {
+      __typename?: 'CarModel'
+      id: string
+      name: string
+      brand: { __typename?: 'CarBrand'; id: string; name: string }
+    }
+  }
 }
 
 export const CarBrandDataFragmentDoc = gql`
@@ -410,13 +451,7 @@ export const CreateCarModelDocument = gql`
   }
 `
 export const CreateCarModificationDocument = gql`
-  mutation CreateCarModification(
-    $modelId: ID!
-    $name: String!
-    $coupe: CarCoupe
-    $horsePower: Int
-    $weight: Float
-  ) {
+  mutation CreateCarModification($modelId: ID!, $name: String!) {
     createCarModification(modelId: $modelId, name: $name) {
       id
       name
@@ -437,6 +472,44 @@ export const CreateCarModificationDocument = gql`
 export const GetCarModificationsByModelDocument = gql`
   query GetCarModificationsByModel($modelId: ID!) {
     carModifications(modelId: $modelId) {
+      id
+      name
+      coupe
+      horsePower
+      weight
+      model {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+export const GetAllCarModificationsDocument = gql`
+  query GetAllCarModifications {
+    allCarModifications {
+      id
+      name
+      coupe
+      horsePower
+      weight
+      model {
+        id
+        name
+        brand {
+          id
+          name
+        }
+      }
+    }
+  }
+`
+export const EditCarModificationDocument = gql`
+  mutation EditCarModification($data: CarModificationData!) {
+    editCarModification(data: $data) {
       id
       name
       coupe
@@ -588,6 +661,36 @@ export function getSdk(
           ),
         'GetCarModificationsByModel',
         'query'
+      )
+    },
+    GetAllCarModifications(
+      variables?: GetAllCarModificationsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<GetAllCarModificationsQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetAllCarModificationsQuery>(
+            GetAllCarModificationsDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'GetAllCarModifications',
+        'query'
+      )
+    },
+    EditCarModification(
+      variables: EditCarModificationMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<EditCarModificationMutation> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<EditCarModificationMutation>(
+            EditCarModificationDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'EditCarModification',
+        'mutation'
       )
     },
   }

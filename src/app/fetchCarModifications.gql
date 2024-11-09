@@ -1,3 +1,4 @@
+# Fetch all car modifications
 query FetchCarModifications {
   allCarModifications {
     id
@@ -24,7 +25,7 @@ query FetchCarModels($brandId: ID!) {
   }
 }
 
-# Fetch car modifications by model ID
+# Fetch car modifications by model ID (this is correct as per the schema)
 query FetchCarModificationsByModel($modelId: ID!) {
   carModifications(modelId: $modelId) {
     id
@@ -55,15 +56,15 @@ mutation CreateCarModel($brandId: ID!, $name: String!) {
   }
 }
 
-# Mutation to create a new car modification
+# Mutation to create a new car modification (adjusted to match the schema)
 mutation CreateCarModification(
   $modelId: ID!
   $name: String!
-  $coupe: CarCoupe
-  $horsePower: Int
-  $weight: Float
 ) {
-  createCarModification(modelId: $modelId, name: $name) {
+  createCarModification(
+    modelId: $modelId
+    name: $name
+  ) {
     id
     name
     coupe
@@ -80,7 +81,7 @@ mutation CreateCarModification(
   }
 }
 
-
+# Fetch car modifications by model ID
 query GetCarModificationsByModel($modelId: ID!) {
   carModifications(modelId: $modelId) {
     id
@@ -99,9 +100,30 @@ query GetCarModificationsByModel($modelId: ID!) {
   }
 }
 
+# Fetch all car modifications by ID (no individual car modification field available in schema)
+query GetAllCarModifications {
+  allCarModifications {
+    id
+    name
+    coupe
+    horsePower
+    weight
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}
 
-query GetCarModificationsById($modificationId: ID!) {
-  carModifications(id: $modificationId) {
+
+
+# Mutation to edit an existing car modification
+mutation EditCarModification($data: CarModificationData!) {
+  editCarModification(data: $data) {
     id
     name
     coupe
