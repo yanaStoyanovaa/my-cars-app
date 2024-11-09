@@ -1,10 +1,12 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import EditableSearchableSelect from '@/app/components/EditableSearchableSelect/EditableSearchableSelect'
 import styles from './EditCreateCarDetails.module.scss'
 import { CarModification } from '@/lib/_generated/graphql_sdk'
+import { validationSchema } from './validationSchema'
+import Loader from '../Loader/Loader'
 
 export interface EditCreateCarDetailsProps {
   postValues: (values: any) => void
@@ -14,6 +16,8 @@ export interface EditCreateCarDetailsProps {
 const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
   const { postValues, car } = props
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true); 
+
 
   const title = car
     ? `Edit Car Modification ${car.model.id}`
@@ -31,12 +35,35 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
     postValues(values)
   }
 
+  useEffect(() => {
+    if (car) {
+      const allFieldsFilled =
+        initialValues.brand &&
+        initialValues.model &&
+        initialValues.modification &&
+        initialValues.horsePower &&
+        initialValues.weight;
+      
+      
+      setIsLoading(!allFieldsFilled);
+    } else {
+      setIsLoading(false); 
+    }
+  }, [car, initialValues]);
+
+
+  if(isLoading) return <Loader message='Loading car details...'/>
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{title}</h1>
-
-      <Formik initialValues={initialValues} onSubmit={handleSubmit} enableReinitialize={true}>
-        {({ setFieldValue, values }) => (
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+        validationSchema={validationSchema}
+      >
+        {({ setFieldValue, values, isValid, dirty }) => (
           <Form>
             <div className={styles.form}>
               {/* Brand Field */}
@@ -48,9 +75,9 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   queryKey="brands"
                   selectedId={values.brand} // Initial value from `car` if provided
                   onChange={(value) => {
-                    setFieldValue('brand', value);
-                    setFieldValue('model', ''); // Clear model when brand changes
-                    setFieldValue('modification', ''); // Clear modification when brand changes
+                    setFieldValue('brand', value)
+                    setFieldValue('model', '') // Clear model when brand changes
+                    setFieldValue('modification', '') // Clear modification when brand changes
                   }}
                 />
                 <ErrorMessage
@@ -69,8 +96,8 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   queryKey="models"
                   selectedId={values.brand} // Model depends on selected brand
                   onChange={(value) => {
-                    setFieldValue('model', value);
-                    setFieldValue('modification', ''); // Clear modification when model changes
+                    setFieldValue('model', value)
+                    setFieldValue('modification', '') // Clear modification when model changes
                   }}
                   disabled={!values.brand}
                 />
@@ -89,7 +116,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   placeholder="Select or create modification"
                   queryKey="modifications"
                   selectedId={car ? car.model.id : values.model} // Modification depends on selected model
-                  selectedModificationID={car ? car.id : ""}
+                  selectedModificationID={car ? car.id : ''}
                   onChange={(value) => setFieldValue('modification', value)}
                   disabled={!values.model}
                 />
@@ -106,6 +133,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 <Field
                   name="horsePower"
                   type="number"
+                  className={styles.numberInput}
                   style={{
                     padding: '8px',
                     borderRadius: '4px',
@@ -125,6 +153,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                 <Field
                   name="weight"
                   type="number"
+                  className={styles.numberInput}
                   style={{
                     padding: '8px',
                     borderRadius: '4px',
@@ -141,7 +170,11 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
 
             {/* Buttons */}
             <div className={styles.buttonContainer}>
-              <button type="submit" className={styles.primaryButton}>
+              <button
+                type="submit"
+                className={styles.primaryButton}
+                disabled={!isValid || !dirty} 
+              >
                 Save Car
               </button>
               <button

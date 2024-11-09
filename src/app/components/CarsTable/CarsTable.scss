@@ -1,0 +1,114 @@
+/* Container styling for the table and header */
+.table-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header section styling */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.create-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.create-button:hover {
+  background-color: #218838;
+}
+
+.table-wrapper {
+    overflow-x: auto; /* Enables horizontal scroll when needed */
+    overflow-y: auto; /* Enables vertical scroll when needed */
+    max-height: 80vh; /* Set the maximum height for the table container */
+    width: 100%;
+  }
+  
+  /* Table styling to maintain minimum width */
+  .table-root {
+    min-width: 800px; /* Ensures horizontal scroll appears if screen is narrower than this */
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+
+.header-row {
+  background-color: #6c757d !important; /* Ensure header row always has a dark background */
+  color: white;
+}
+
+.header-row .table-cell {
+  color: white !important; /* Ensure header cells have white text */
+}
+
+.table-row:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.table-row:hover {
+  background-color: #e9ecef;
+}
+
+.table-cell {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+}
+
+/* Loading and error styling */
+.loading,
+.error {
+  color: #dc3545;
+  font-size: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Button styling inside table cells */
+.edit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.button-icon {
+  margin-right: 5px;
+}

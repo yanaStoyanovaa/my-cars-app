@@ -7,6 +7,7 @@ export default async function Home() {
 
   return (
     <div className="">
+      <title>Cars Table</title>
       <CarsDataTable/>
     </div>
   )

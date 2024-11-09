@@ -1,78 +1,124 @@
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
+  max-width: 700px; /* Set a more narrow width for better focus */
+  margin: 10vh auto; /* Center it with vertical spacing */
+  padding: 30px;
+  background-color: #f9f9f9; /* Subtle background color */
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for focus */
+  border: 1px solid #e0e0e0;
 
-  .title {
-    font-size: 24px;
+  @media (max-width: 600px) {
+    margin-top: 0; /* Remove top margin on smaller screens */
+    padding: 20px; /* Adjust padding for mobile */
+  }
+
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 20px;
+  text-align: center; /* Center the title for focus */
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+   @media (max-width: 600px) {
+    grid-template-columns: 1fr; /* Stack fields vertically on mobile */
+  }
+}
+
+.fieldContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
     font-weight: bold;
-    margin-bottom: 20px;
+    color: #6c757d;
   }
 
-  .form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
+  .input, .numberInput {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
   }
 
-  .fieldContainer {
-    display: flex;
+  .errorMessage {
+    color: #dc3545;
+    font-size: 12px;
+  }
+}
+
+/* Buttons */
+.buttonContainer {
+  grid-column: span 2; /* Span across both columns on larger screens */
+  display: flex;
+  gap: 12px;
+  justify-content: center; /* Center the buttons for a balanced look */
+  margin-top: 30px;
+
+  @media (max-width: 600px) {
     flex-direction: column;
-    gap: 4px;
+    gap: 10px;
+    margin-top: 20px; /* Adjust margin on smaller screens */
+  }
+}
 
-    label {
-      font-weight: bold;
-    }
+.primaryButton {
+  width: 150px;
+  background-color: #28a745;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
 
-    .input {
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    .errorMessage {
-      color: red;
-      font-size: 12px;
-    }
+  &:hover {
+    background-color: #218838;
   }
 
-  .buttonContainer {
-    grid-column: span 2; // Span across both columns on larger screens
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 20px;
-
-    @media (max-width: 600px) {
-      flex-direction: column; // Stack buttons vertically on small screens
-      gap: 10px;
-    }
+  @media (max-width: 600px) {
+    width: 100%; /* Full width on mobile */
   }
 
-  .primaryButton {
-    width: 150px;
-    background-color: #28a745;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
+  &:disabled {
+    background-color: #cccccc; /* Lighter color when disabled */
+    color: #666666; /* Dim text color */
+    cursor: not-allowed; /* Disabled cursor */
+    opacity: 0.7; /* Slightly transparent */
   }
 
-  .secondaryButton {
-    width: 150px;
+}
 
-    background-color: #ccc;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
+.secondaryButton {
+  width: 150px;
+  background-color: #ccc;
+  color: #333;
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #b3b3b3;
   }
+
+  @media (max-width: 600px) {
+    width: 100%; /* Full width on mobile */
+  }
+
+  
 }
