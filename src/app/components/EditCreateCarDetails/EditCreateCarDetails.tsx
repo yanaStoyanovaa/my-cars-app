@@ -29,6 +29,7 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
     weight: car ? car.weight : 0,
     brandName: car ? car.model.brand.name : "",
     modelName: car ? car.model.name : "",
+    selectedModificationID: car ? car.id : ''
   }
 
   const handleSubmit = (values: typeof initialValues) => {
@@ -58,8 +59,10 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   onChange={(value, name ) => {
                     setFieldValue('brand', value)
                     setFieldValue("brandName", name)
-                    setFieldValue('model', '') // Clear model when brand changes
-                    setFieldValue('modification', '') // Clear modification when brand changes
+                    setFieldValue('model', null) // Clear model when brand changes
+                    setFieldValue('modification', null) // Clear modification when brand changes
+                    setFieldValue('selectedModificationID', null) // Clear modification when brand changes
+
                   }}
                 />
                 <ErrorMessage
@@ -80,7 +83,9 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   onChange={(value, name) => {
                     setFieldValue("modelName", name)
                     setFieldValue('model', value)
-                    setFieldValue('modification', '') // Clear modification when model changes
+                    setFieldValue('modification', null) // Clear modification when model changes
+                    setFieldValue('selectedModificationID', null) // Clear modification when brand changes
+
                   }}
                   disabled={!values.brand}
                 />
@@ -98,8 +103,8 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   name="modification"
                   placeholder="Select or create modification"
                   queryKey="modifications"
-                  selectedId={car ? car.model.id : values.model} // Modification depends on selected model
-                  selectedModificationID={car ? car.id : ''}
+                  selectedId={values.model} 
+                  selectedModificationID={values.selectedModificationID}
                   onChange={(value) => setFieldValue('modification', value)}
                   disabled={!values.model}
                 />
