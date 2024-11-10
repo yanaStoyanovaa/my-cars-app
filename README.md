@@ -1,15 +1,2 @@
-# Docs and examples are located in _docs folder
-
-# Run server
-```bash
-# form the project root
-npm run dev
-```
-
-# Generate API
-```bash
-# form the project root
-cd _codegen
-# npm install - if required only once
-npm run generate
-```
+Car Management CRUD Application
+This project is a two-page web application built with Next.js, React, TypeScript, GraphQL, and TailwindCSS. It provides a car management system where users can view, edit, create, and delete car brands, models, and modifications. The application demonstrates a responsive UI, efficient API usage, and seamless CRUD functionality using a GraphQL API.
