@@ -5,4 +5,14 @@
 
 body {
     overflow: hidden;
+    background-color: #121212; 
+    color: #e0e0e0; 
+    font-family: 'Montserrat', sans-serif;
+
+
+  
 }
+
+[data-is-root-theme="true"][data-accent-color="indigo"] {
+    background-color: #121212; 
+  }

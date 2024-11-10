@@ -1,25 +1,26 @@
 .container {
-  max-width: 700px; /* Set a more narrow width for better focus */
-  margin: 10vh auto; /* Center it with vertical spacing */
+  max-width: 1000px;
+  margin: 20vh auto;
   padding: 30px;
-  background-color: #f9f9f9; /* Subtle background color */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for focus */
-  border: 1px solid #e0e0e0;
+  background-color: #1f1f1f; 
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333; 
 
   @media (max-width: 600px) {
-    margin-top: 0; /* Remove top margin on smaller screens */
-    padding: 20px; /* Adjust padding for mobile */
+    margin-top: 0;
+    padding: 20px;
   }
-
 }
 
 .title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
-  color: #343a40;
+  color: #e0e0e0; 
   margin-bottom: 20px;
-  text-align: center; /* Center the title for focus */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px; 
 }
 
 .form {
@@ -27,98 +28,115 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 
-   @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* Stack fields vertically on mobile */
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
 }
-
 .fieldContainer {
   display: flex;
   flex-direction: column;
   gap: 6px;
 
   label {
-    font-weight: bold;
-    color: #6c757d;
+    font-weight: 600;
+    color: #bd8b2d; 
+    font-size: 14px;
   }
 
   .input, .numberInput {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 6px; 
+    border: 1px solid #444;
+    background-color: #2b2b2b;
     font-size: 16px;
-    width: 100%;
+    color: #e0e0e0;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      border-color: #bd8b2d; 
+      box-shadow: 0 0 4px rgba(189, 139, 45, 0.5); 
+      outline: none;
+    }
   }
 
   .errorMessage {
-    color: #dc3545;
+    color: #e57373;
     font-size: 12px;
   }
 }
 
-/* Buttons */
 .buttonContainer {
-  grid-column: span 2; /* Span across both columns on larger screens */
+  grid-column: span 2;
   display: flex;
   gap: 12px;
-  justify-content: center; /* Center the buttons for a balanced look */
+  justify-content: center;
   margin-top: 30px;
 
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px; /* Adjust margin on smaller screens */
+    margin-top: 20px;
   }
 }
 
 .primaryButton {
   width: 150px;
-  background-color: #28a745;
+  background-color: #bd8b2d; 
   color: #fff;
   padding: 12px 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 
   &:hover {
-    background-color: #218838;
+    background-color: #a57525; 
+    transform: scale(1.05); 
   }
 
   @media (max-width: 600px) {
-    width: 100%; /* Full width on mobile */
+    width: 100%;
   }
 
   &:disabled {
-    background-color: #cccccc; /* Lighter color when disabled */
-    color: #666666; /* Dim text color */
-    cursor: not-allowed; /* Disabled cursor */
-    opacity: 0.7; /* Slightly transparent */
+    background-color: #666666;
+    color: #b3b3b3;
+    cursor: not-allowed;
+    opacity: 0.5;
   }
-
 }
 
 .secondaryButton {
   width: 150px;
-  background-color: #ccc;
-  color: #333;
+  background-color: #444;
+  color: #e0e0e0;
   padding: 12px 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 
   &:hover {
-    background-color: #b3b3b3;
+    background-color: #555; 
+    transform: scale(1.05); 
   }
 
   @media (max-width: 600px) {
-    width: 100%; /* Full width on mobile */
+    width: 100%;
   }
+}
 
-  
+
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.numberInput {
+  -moz-appearance: textfield;
 }

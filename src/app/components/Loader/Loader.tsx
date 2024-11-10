@@ -10,11 +10,10 @@ const Loader: React.FC<LoaderProps> = ({ message }) => {
   return (
     <div style={loaderStyles.container}>
       <Spinner size="3" />
-      {message && <Text style={loaderStyles.message}>{message}</Text>}
+      {message && <div style={loaderStyles.message}>{message}</div>}
     </div>
   );
 };
-
 
 const loaderStyles = {
   container: {
@@ -22,14 +21,20 @@ const loaderStyles = {
     flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    height: "300px", 
-    gap: '8px',
+    height: '100vh',
+    gap: '12px',
     padding: '20px',
-  },
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    color: '#e0e0e0',
+  } as React.CSSProperties,
   message: {
-    fontSize: '16px',
-    color: '#6c757d', 
-  },
+    fontSize: '18px',
+    fontWeight: 500 as const,
+    color: '#bd8b2d',
+    textAlign: 'center' as const,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '1px',
+  } as React.CSSProperties,
 };
 
 export default Loader;

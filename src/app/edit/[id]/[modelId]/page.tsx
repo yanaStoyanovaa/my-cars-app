@@ -93,7 +93,7 @@ const EditCarModification: React.FC = () => {
   if (error) return <p>Error updating car modification: {error.message}</p>
 
   return (
-    <div>
+    <div style={{backgroundColor : "#121212"}}>
       {!isLoading && (
         <EditCreateCarDetails
           postValues={editCreateCarDetailProps.postValues}

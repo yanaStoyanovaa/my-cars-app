@@ -1,13 +1,11 @@
-/* Container styling for the table and header */
 .table-container {
   margin: 20px;
   padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Header section styling */
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -16,99 +14,134 @@
 }
 
 .table-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #343a40;
+  font-size: 26px;
+  font-weight: 600;
+  color: #e0e0e0; 
+  text-transform: uppercase;
 }
 
 .create-button {
-  background-color: #28a745;
+  background-color: #bd8b2d;
   color: white;
   padding: 10px 20px;
   font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .create-button:hover {
-  background-color: #218838;
+  background-color: #a57525; 
+  transform: scale(1.05); 
 }
 
 .table-wrapper {
-    overflow-x: auto; /* Enables horizontal scroll when needed */
-    overflow-y: auto; /* Enables vertical scroll when needed */
-    max-height: 80vh; /* Set the maximum height for the table container */
-    width: 100%;
-  }
-  
-  /* Table styling to maintain minimum width */
-  .table-root {
-    min-width: 800px; /* Ensures horizontal scroll appears if screen is narrower than this */
-    width: 100%;
-    border-collapse: collapse;
-  }
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 83vh;
+  width: 100%;
+}
 
+.table-root {
+  min-width: 800px;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+}
 
 .header-row {
-  background-color: #6c757d !important; /* Ensure header row always has a dark background */
-  color: white;
+  background-color: #333333 !important;
+  color: #ffffff;
 }
 
 .header-row .table-cell {
-  color: white !important; /* Ensure header cells have white text */
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  padding: 15px 10px;
+  border-bottom: 2px solid #444; 
 }
 
 .table-row:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: #2b2b2b; 
 }
 
 .table-row:nth-child(odd) {
-  background-color: #ffffff;
+  background-color: #252525;
 }
 
 .table-row:hover {
-  background-color: #e9ecef;
+  background-color: #383838;
 }
 
 .table-cell {
-  padding: 12px 15px;
+  padding: 15px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
   font-size: 16px;
+  color: #cccccc; 
+  border-bottom: 1px solid #444;
 }
 
-/* Loading and error styling */
 .loading,
 .error {
-  color: #dc3545;
+  color: #e57373;
   font-size: 16px;
   padding: 20px;
   text-align: center;
 }
 
-/* Button styling inside table cells */
 .edit-button {
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
+  background-color: #454b57; 
+  color: #e0e0e0;
+  padding: 6px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
   display: flex;
   align-items: center;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .edit-button:hover {
-  background-color: #0056b3;
+  background-color: #616b80; 
+  transform: scale(1.1); 
 }
 
 .button-icon {
   margin-right: 5px;
+}
+
+.table-cell, .table-header, .edit-button {
+  font-family: 'Montserrat', sans-serif; 
+}
+
+.table-container, .table-root, .table-header, .table-cell {
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+
+.table-wrapper::-webkit-scrollbar {
+  width: 15px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #2b2b2b; 
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a; 
+  border-radius: 10px; 
+  border: 2px solid #2b2b2b; 
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #616161; 
 }

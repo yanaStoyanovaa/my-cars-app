@@ -52,7 +52,7 @@ const CreateNewCar: React.FC = () => {
 
 
   return (
-    <div>
+    <div style={{backgroundColor : "#121212"}}>
       <title>Create new car</title>
       <EditCreateCarDetails postValues={editCreateCarDetailProps.postValues} />
     </div>

@@ -26,6 +26,7 @@ const CarsDataTable: React.FC = () => {
   
   return (
     <div className="table-container">
+            <title>Cars Table</title>
       <div className="table-header">
         <Text className="table-title">Cars Table</Text>
         <Button className="create-button" onClick={() => router.push('create')}>
