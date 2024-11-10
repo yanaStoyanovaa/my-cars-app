@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import EditableSearchableSelect from '@/app/components/EditableSearchableSelect/EditableSearchableSelect'
@@ -27,6 +27,8 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
     modification: car ? car.id : '',
     horsePower: car ? car.horsePower : 0,
     weight: car ? car.weight : 0,
+    brandName: car ? car.model.brand.name : "",
+    modelName: car ? car.model.name : "",
   }
 
   const handleSubmit = (values: typeof initialValues) => {
@@ -53,8 +55,9 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   placeholder="Select or create brand"
                   queryKey="brands"
                   selectedId={values.brand} // Initial value from `car` if provided
-                  onChange={(value) => {
+                  onChange={(value, name ) => {
                     setFieldValue('brand', value)
+                    setFieldValue("brandName", name)
                     setFieldValue('model', '') // Clear model when brand changes
                     setFieldValue('modification', '') // Clear modification when brand changes
                   }}
@@ -74,7 +77,8 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   placeholder="Select or create model"
                   queryKey="models"
                   selectedId={values.brand} // Model depends on selected brand
-                  onChange={(value) => {
+                  onChange={(value, name) => {
+                    setFieldValue("modelName", name)
                     setFieldValue('model', value)
                     setFieldValue('modification', '') // Clear modification when model changes
                   }}

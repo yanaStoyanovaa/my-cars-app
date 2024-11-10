@@ -9,7 +9,7 @@ interface EditableSearchableSelectProps {
   queryKey: "brands" | "models" | "modifications";
   selectedId?: string; // brandId or modelId, depending on the context
   selectedModificationID?: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, name: string) => void;
   disabled? : boolean
 }
 
@@ -129,7 +129,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
         setSelectedName(newName);
         setInputValue(""); // Clear input field
         setShowCreateButton(false);
-        onChange(newId); // Send the new ID back to the parent component
+        onChange(newId, newName); // Send the new ID back to the parent component
         refetch(); // Refetch options to include the new entry
       }
     },
@@ -143,7 +143,7 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   };
 
   const handleOptionClick = (option: { id: string; name: string }) => {
-    onChange(option.id);
+    onChange(option.id, name);
     setSelectedName(option.name);
     setInputValue(""); 
     setShowDropdown(false);

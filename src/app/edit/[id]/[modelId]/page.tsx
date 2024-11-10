@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useParams, useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
 import EditCreateCarDetails, {
   EditCreateCarDetailsProps,
 } from '@/app/components/EditCreateCarDetails/EditCreateCarDetails'
@@ -16,6 +16,7 @@ import Loader from '@/app/components/Loader/Loader'
 
 const EditCarModification: React.FC = () => {
   const { id, modelId } = useParams()
+  const router = useRouter()
   const [car, setCar] = useState<CarModification>({
     name: '',
     coupe:  CarCoupe.Convertible,
@@ -34,8 +35,7 @@ const EditCarModification: React.FC = () => {
   
   
   })
-  const [isSubmitting, setIsSubmitting] = useState(false) 
-  const [error, setError] = useState<Error | null>(null) 
+   const [error, setError] = useState<Error | null>(null) 
 
 
 
@@ -53,23 +53,17 @@ const EditCarModification: React.FC = () => {
 
 
 
-  const editCarModification = async (values: CarModification) => {
-    setIsSubmitting(true)
+  const editCarModification = async (values: CarModificationData) => {
     setError(null)
 
-
-    console.log("Sending payload to EditCarModification:", values)
-
     try {
-      const updatedCar: EditCarModificationMutation = await GraphQLBackend.EditCarModification({
+      await GraphQLBackend.EditCarModification({
         data: values, 
       })
-      console.log('Successfully updated:', updatedCar)
     } catch (err) {
       setError(err as Error)
-      console.error('Error updating car modification:', err)
     } finally {
-      setIsSubmitting(false)
+      router.push("/")
     }
   }
 
@@ -83,6 +77,8 @@ const EditCarModification: React.FC = () => {
 
 
   const editCreateCarDetailProps: EditCreateCarDetailsProps = {
+    //why no put/post for carModification?
+    //how to update all? 
     postValues: (values) =>
     editCarModification({
       id : car.id,
@@ -90,20 +86,19 @@ const EditCarModification: React.FC = () => {
       coupe: car.coupe,
       horsePower: values.horsePower,
       weight: values.weight,
-      model : {
-        id : values.model,
-        name: "",
-        brand : {
-          name: "",
-          id : values.brand
-        }
-      }
+      // model : {
+      //   id : values.model,
+      //   name: value.modelName,
+      //   brand : {
+      //     name: value.brandName,
+      //     id : values.brand
+      //   }
+      // }
     }),
     car: car as CarModification,
   }
 
   if (isLoading) return <Loader message="Loading car details..." />
-  if (isSubmitting) return <Loader message="Submitting changes..." />
   if (error) return <p>Error updating car modification: {error.message}</p>
 
   return (
