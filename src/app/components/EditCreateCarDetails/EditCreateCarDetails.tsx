@@ -59,9 +59,9 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   onChange={(value, name ) => {
                     setFieldValue('brand', value)
                     setFieldValue("brandName", name)
-                    setFieldValue('model', null) // Clear model when brand changes
-                    setFieldValue('modification', null) // Clear modification when brand changes
-                    setFieldValue('selectedModificationID', null) // Clear modification when brand changes
+                    setFieldValue('model', '') // Clear model when brand changes
+                    setFieldValue('modification', '') // Clear modification when brand changes
+                    setFieldValue('selectedModificationID', '') // Clear modification when brand changes
 
                   }}
                 />
@@ -79,12 +79,12 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   name="model"
                   placeholder="Select or create model"
                   queryKey="models"
-                  selectedId={values.brand} // Model depends on selected brand
+                  selectedId={values.brand} 
                   onChange={(value, name) => {
                     setFieldValue("modelName", name)
                     setFieldValue('model', value)
-                    setFieldValue('modification', null) // Clear modification when model changes
-                    setFieldValue('selectedModificationID', null) // Clear modification when brand changes
+                    setFieldValue('modification', '') 
+                    setFieldValue('selectedModificationID', '')
 
                   }}
                   disabled={!values.brand}

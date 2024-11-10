@@ -19,25 +19,20 @@ const EditCarModification: React.FC = () => {
   const router = useRouter()
   const [car, setCar] = useState<CarModification>({
     name: '',
-    coupe:  CarCoupe.Convertible,
+    coupe: CarCoupe.Convertible,
     horsePower: 0,
     weight: 0,
-    id: "",
+    id: '',
     model: {
-      id: "0",
-      name: "",
+      id: '0',
+      name: '',
       brand: {
-        id: "0",
-        name: "Audi"
-      }
-    }
-
-  
-  
+        id: '0',
+        name: 'Audi',
+      },
+    },
   })
-   const [error, setError] = useState<Error | null>(null) 
-
-
+  const [error, setError] = useState<Error | null>(null)
 
   const { data, isLoading } = useQuery<CarModification[]>({
     queryKey: ['carModifications', modelId],
@@ -51,19 +46,18 @@ const EditCarModification: React.FC = () => {
     enabled: !!modelId,
   })
 
-
-
   const editCarModification = async (values: CarModificationData) => {
     setError(null)
 
     try {
-      await GraphQLBackend.EditCarModification({
-        data: values, 
+      const res = await GraphQLBackend.EditCarModification({
+        data: values,
       })
+      console.log('response edit', res)
     } catch (err) {
       setError(err as Error)
     } finally {
-      router.push("/")
+      router.push('/')
     }
   }
 
@@ -73,28 +67,25 @@ const EditCarModification: React.FC = () => {
     setCar(filteredModifications as CarModification)
   }, [data])
 
-
-
-
   const editCreateCarDetailProps: EditCreateCarDetailsProps = {
     //why no put/post for carModification?
-    //how to update all? 
+    //how to update all?
     postValues: (values) =>
-    editCarModification({
-      id : car.id,
-      name: values.modification,
-      coupe: car.coupe,
-      horsePower: values.horsePower,
-      weight: values.weight,
-      // model : {
-      //   id : values.model,
-      //   name: value.modelName,
-      //   brand : {
-      //     name: value.brandName,
-      //     id : values.brand
-      //   }
-      // }
-    }),
+      editCarModification({
+        id: car.id,
+        name: values.modification,
+        coupe: car.coupe,
+        horsePower: values.horsePower,
+        weight: values.weight,
+        // model : {
+        //   id : values.model,
+        //   name: value.modelName,
+        //   brand : {
+        //     name: value.brandName,
+        //     id : values.brand
+        //   }
+        // }
+      }),
     car: car as CarModification,
   }
 

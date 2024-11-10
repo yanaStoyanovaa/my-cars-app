@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, QueryErrorResetBoundary } from "@tanstack/react-query";
 import { GraphQLBackend } from "@/lib/api/graphql"; // Adjust the path as per your setup
 import styles from "./EditableSearchableSelect.module.scss";
 
@@ -25,9 +25,9 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<{ id: string; name: string }[]>([]);
   const [showCreateButton, setShowCreateButton] = useState(false);
-  const [selectedName, setSelectedName] = useState(""); // Holds the name of the selected or created item
-  const [showDropdown, setShowDropdown] = useState(false); // Controls dropdown visibility
-  const dropdownRef = useRef<HTMLDivElement | null>(null); // Ref for the dropdown container
+  const [selectedName, setSelectedName] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false); 
+  const dropdownRef = useRef<HTMLDivElement | null>(null); 
 
   // Fetch options based on queryKey and selectedId
   const { data, isLoading, refetch } = useQuery({
@@ -46,7 +46,6 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
           } 
           return [];
         case "modifications":
-          console.log("selected id", selectedId)
           if (selectedId) {
             const modificationsResponse = await GraphQLBackend.FetchCarModificationsByModel({
               modelId: selectedId,
@@ -61,7 +60,6 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
     enabled: queryKey === "brands" || Boolean(selectedId) || queryKey === "models",
   });
 
-  // Update the selected name when selectedId or data changes
   useEffect(() => {
     if (data) {
       let initialOption;
@@ -91,6 +89,19 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
       setShowCreateButton(matchingOptions.length === 0 && inputValue !== "");
     }
   }, [data, inputValue]);
+
+
+  useEffect(() => {
+    if(selectedId && queryKey === 'models') {
+      setSelectedName('');
+      setInputValue("");
+    }
+    if (!selectedId) {
+      setSelectedName('');
+      setInputValue("");  
+    }
+  }, [selectedId]);
+
 
   // Mutation to create a new entry
   const { mutate: createNewEntry } = useMutation({
@@ -127,10 +138,10 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
   
       if (newId && newName) {
         setSelectedName(newName);
-        setInputValue(""); // Clear input field
+        setInputValue(""); 
         setShowCreateButton(false);
-        onChange(newId, newName); // Send the new ID back to the parent component
-        refetch(); // Refetch options to include the new entry
+        onChange(newId, newName); 
+        refetch(); 
       }
     },
   });
@@ -138,8 +149,8 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-    setSelectedName(""); // Clear selected name when typing a new input
-    setShowDropdown(true); // Show dropdown when typing
+    setSelectedName(""); 
+    setShowDropdown(true); 
   };
 
   const handleOptionClick = (option: { id: string; name: string }) => {
@@ -182,9 +193,9 @@ const EditableSearchableSelect: React.FC<EditableSearchableSelectProps> = ({
       <input
         type="text"
         placeholder={`Search or add ${placeholder.toLowerCase()}`}
-        value={selectedName || inputValue} // Show the selected name or the input value
+        value={selectedName || inputValue}
         onChange={handleInputChange}
-        onFocus={handleInputFocus} // Show dropdown on focus
+        onFocus={handleInputFocus} 
         className={styles.input}
         disabled={disabled}
       />
