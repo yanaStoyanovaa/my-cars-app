@@ -1,10 +1,9 @@
-// Loader.tsx
 'use client';
 import { Spinner, Text } from '@radix-ui/themes';
 import React from 'react';
 
 interface LoaderProps {
-  message?: string; // Optional message to display below the spinner
+  message?: string; 
 }
 
 const Loader: React.FC<LoaderProps> = ({ message }) => {
@@ -16,20 +15,20 @@ const Loader: React.FC<LoaderProps> = ({ message }) => {
   );
 };
 
-// Inline styles for the loader
+
 const loaderStyles = {
   container: {
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    height: "300px", // Full height if used to cover an area
+    height: "300px", 
     gap: '8px',
     padding: '20px',
   },
   message: {
     fontSize: '16px',
-    color: '#6c757d', // Muted color for message text
+    color: '#6c757d', 
   },
 };
 

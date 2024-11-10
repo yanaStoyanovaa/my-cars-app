@@ -55,13 +55,13 @@ const EditCreateCarDetails = (props: EditCreateCarDetailsProps) => {
                   name="brand"
                   placeholder="Select or create brand"
                   queryKey="brands"
-                  selectedId={values.brand} // Initial value from `car` if provided
+                  selectedId={values.brand} 
                   onChange={(value, name ) => {
                     setFieldValue('brand', value)
                     setFieldValue("brandName", name)
-                    setFieldValue('model', '') // Clear model when brand changes
-                    setFieldValue('modification', '') // Clear modification when brand changes
-                    setFieldValue('selectedModificationID', '') // Clear modification when brand changes
+                    setFieldValue('model', '') 
+                    setFieldValue('modification', '') 
+                    setFieldValue('selectedModificationID', '') 
 
                   }}
                 />
